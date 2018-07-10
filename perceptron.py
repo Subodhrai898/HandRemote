@@ -24,8 +24,10 @@ class neuralPerceptron(object):
         return s
 
     def fit(self,X_train,Y_train):
+        m = X_train.shape[0]
         X = X_train.T
         Y = Y_train.T
+
         Z1 = []
         A1 = []
         Z2 = []
@@ -44,15 +46,15 @@ class neuralPerceptron(object):
           dW2 = (1./m) * np.matmul(dZ2, A1.T)
           db2 = (1./m) * np.sum(dZ2, axis=1, keepdims=True)
 
-          dA1 = np.matmul(W2.T, dZ2)
+          dA1 = np.matmul(self.W2.T, dZ2)
           dZ1 = dA1 * self.sigmoid(Z1) * (1 - self.sigmoid(Z1))
           dW1 = (1./m) * np.matmul(dZ1, X.T)
           db1 = (1./m) * np.sum(dZ1, axis=1, keepdims=True)
 
-          self.W2 = self.W2 - learning_rate * dW2
-          self.b2 = self.b2 - learning_rate * db2
-          self.W1 = self.W1 - learning_rate * dW1
-          self.b1 = self.b1 - learning_rate * db1
+          self.W2 = self.W2 - self.learning_rate * dW2
+          self.b2 = self.b2 - self.learning_rate * db2
+          self.W1 = self.W1 - self.learning_rate * dW1
+          self.b1 = self.b1 - self.learning_rate * db1
 
           if (i % 100 == 0):
                 print("Epoch", i, "cost: ", cost)
@@ -60,11 +62,13 @@ class neuralPerceptron(object):
 
 
     def predict_class(self,X):
+        X = X.T
         Z1 = np.matmul(self.W1,X) + self.b1
-        A1 = sigmoid(Z1)
+        A1 = self.sigmoid(Z1)
         Z2 = np.matmul(self.W2,A1) + self.b2
         A2 = np.exp(Z2) / np.sum(np.exp(Z2), axis=0)
         A2 = A2>0.5
         a = A2.flatten()
+        print(a)
         i = np.where(a==True)
         return i[0][0]

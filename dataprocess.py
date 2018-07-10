@@ -1,5 +1,5 @@
 #data processing
-import numpy 
+import numpy
 from keras.utils import np_utils
 
 def process(X_train,y_train):
@@ -9,7 +9,7 @@ def process(X_train,y_train):
 
     y_train = np_utils.to_categorical(y_train)
 
-    num_classes = y_test.shape[1]
+    num_classes = y_train.shape[1]
 
     return X_train,y_train,num_pixels,num_classes
 def inputProcess(X):
